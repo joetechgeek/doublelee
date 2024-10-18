@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { supabase } from '../../utils/supabase';
 import { useRouter } from 'next/navigation';
+import { AuthError } from '@supabase/supabase-js';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -17,8 +18,12 @@ export default function Login() {
       if (error) throw error;
       router.push('/');
       router.refresh();
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error) {
+      if (error instanceof AuthError) {
+        setError(error.message);
+      } else {
+        setError('An unexpected error occurred');
+      }
     }
   };
 
