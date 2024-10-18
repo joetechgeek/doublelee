@@ -20,6 +20,7 @@ export default async function Home() {
           height={38}
           priority
         />
+        {data && <p className="text-lg font-bold">Message from Supabase: {data.message}</p>}
         <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
           <li className="mb-2">
             Get started by editing{" "}

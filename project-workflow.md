@@ -5,13 +5,14 @@
 - [x] Set up GitHub repository
 - [x] Deploy to Vercel
 - [x] Set up Supabase project
-- [ ] Configure Supabase connection in Next.js
+- [x] Configure Supabase connection in Next.js
 - [x] Obtain Stripe test API keys
 - [ ] Set up Stripe in Next.js
 
 ## 2. Database Design and Setup
 - [x] Create 'test' table with 'message' column in Supabase
 - [x] Add sample data to 'test' table
+- [x] Test Supabase connection by displaying message on homepage
 - [ ] Design simple schema for products, users, orders, and affiliate links
 - [ ] Set up tables in Supabase
 - [ ] Add sample product data to the database
