@@ -13,16 +13,17 @@
 - [x] Create 'test' table with 'message' column in Supabase
 - [x] Add sample data to 'test' table
 - [x] Test Supabase connection by displaying message on homepage
-- [ ] Design simple schema for products, users, orders, and affiliate links
-- [ ] Set up tables in Supabase
-- [ ] Add sample product data to the database
+- [x] Design simple schema for products, users, orders, and affiliate links
+- [x] Set up products table in Supabase
+- [x] Add sample product data to the database
+- [ ] Set up users, orders, and affiliate links tables
 - [ ] Define Row Level Security (RLS) policies for tables
 
 ## 3. Homepage (Product Listing)
-- [ ] Create product model
-- [ ] Implement API route to fetch products from Supabase
-- [ ] Design and implement homepage with product listing
-- [ ] Ensure product listing is visible to all users (authenticated and unauthenticated)
+- [x] Create product model
+- [x] Implement API route to fetch products from Supabase
+- [x] Design and implement homepage with product listing
+- [x] Ensure product listing is visible to all users (authenticated and unauthenticated)
 
 ## 4. Navigation and Layout
 - [ ] Create a basic layout component with navbar
