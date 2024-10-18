@@ -35,6 +35,7 @@ const Navbar = () => {
           <Link href="/cart" className={pathname === '/cart' ? 'font-bold' : ''}>Cart</Link>
           {user ? (
             <>
+              <Link href="/profile" className={pathname === '/profile' ? 'font-bold' : ''}>Profile</Link>
               <span>Welcome, {user.email}</span>
               <button onClick={handleSignOut}>Sign Out</button>
             </>
