@@ -7,7 +7,7 @@
 - [x] Set up Supabase project
 - [x] Configure Supabase connection in Next.js
 - [x] Obtain Stripe test API keys
-- [ ] Set up Stripe in Next.js
+- [x] Set up Stripe in Next.js
 
 ## 2. Database Design and Setup
 - [x] Create 'test' table with 'message' column in Supabase
