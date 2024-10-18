@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../../utils/supabase';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { AuthError } from '@supabase/supabase-js';
 
 export default function Login() {
@@ -10,14 +10,34 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    // Check if user is already logged in
+    const checkUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) {
+        handleRedirect();
+      }
+    };
+    checkUser();
+  }, []);
+
+  const handleRedirect = () => {
+    const redirect = searchParams.get('redirect');
+    if (redirect === 'checkout') {
+      router.push('/cart'); // Redirect to cart page, which has the checkout button
+    } else {
+      router.push('/'); // Default redirect to home page
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const { error } = await supabase.auth.signInWithPassword({ email, password });
       if (error) throw error;
-      router.push('/');
-      router.refresh();
+      handleRedirect();
     } catch (error) {
       if (error instanceof AuthError) {
         setError(error.message);

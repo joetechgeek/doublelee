@@ -1,13 +1,24 @@
 'use client';
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import getStripe from '../../utils/stripe';
 import { useCart } from '../../contexts/CartContext';
+import { supabase } from '../../utils/supabase';
 
 const CheckoutButton: React.FC = () => {
   const { cart, clearCart } = useCart();
+  const router = useRouter();
 
   const handleCheckout = async () => {
+    const { data: { user } } = await supabase.auth.getUser();
+
+    if (!user) {
+      // Redirect to login page if user is not authenticated
+      router.push('/login?redirect=checkout');
+      return;
+    }
+
     try {
       const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
