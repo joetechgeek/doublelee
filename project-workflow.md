@@ -41,10 +41,11 @@
 - [x] Implement cart state management using React Context
 - [x] Create add to cart functionality (available for all users)
 - [x] Design and implement cart view page
+- [x] Refine cart UI with quantity adjustments
+- [x] Connect cart to Stripe checkout process
 
 ## 7. Checkout Process
-- [ ] Design checkout form (accessible only to logged-in users)
-- [ ] Implement Stripe payment integration
+- [x] Implement Stripe payment integration with cart items
 - [ ] Create order confirmation page
 - [ ] Set up basic email confirmation
 

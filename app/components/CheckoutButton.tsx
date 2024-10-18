@@ -2,8 +2,11 @@
 
 import React from 'react';
 import getStripe from '../../utils/stripe';
+import { useCart } from '../../contexts/CartContext';
 
 const CheckoutButton: React.FC = () => {
+  const { cart, clearCart } = useCart();
+
   const handleCheckout = async () => {
     try {
       const response = await fetch('/api/create-checkout-session', {
@@ -12,12 +15,17 @@ const CheckoutButton: React.FC = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          items: [
-            {
-              price: 'price_1QBJjxFFBSdJ9JiJru4ZKGd7', // Replace with an actual Stripe Price ID
-              quantity: 1,
+          items: cart.map(item => ({
+            price_data: {
+              currency: 'usd',
+              product_data: {
+                name: item.name,
+                images: [item.image_url],
+              },
+              unit_amount: Math.round(item.price * 100), // Stripe expects amounts in cents
             },
-          ],
+            quantity: item.quantity,
+          })),
         }),
       });
 
@@ -28,6 +36,8 @@ const CheckoutButton: React.FC = () => {
       if (error) {
         console.error('Stripe checkout error:', error);
         alert('An error occurred. Please try again.');
+      } else {
+        clearCart(); // Clear the cart after successful checkout
       }
     } catch (error) {
       console.error('Checkout error:', error);
@@ -38,9 +48,10 @@ const CheckoutButton: React.FC = () => {
   return (
     <button
       onClick={handleCheckout}
-      className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+      className="bg-green-500 text-white px-6 py-3 rounded hover:bg-green-600"
+      disabled={cart.length === 0}
     >
-      Test Stripe Checkout
+      Proceed to Checkout
     </button>
   );
 };
