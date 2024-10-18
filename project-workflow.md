@@ -30,12 +30,12 @@
 - [x] Add links for Home, Cart, Login/Register, and Affiliate Program
 
 ## 5. Authentication
-- [ ] Implement user registration (customers and affiliates)
-- [ ] Implement login functionality
-- [ ] Implement sign-out functionality
+- [x] Implement user registration (customers and affiliates)
+- [x] Implement login functionality
+- [x] Implement sign-out functionality
 - [ ] Create protected routes for user-specific pages
-- [ ] Add login/logout functionality to navbar
-- [ ] Ensure sign-out option is available on all authenticated pages
+- [x] Add login/logout functionality to navbar
+- [x] Ensure sign-out option is available on all authenticated pages
 
 ## 6. Shopping Cart
 - [ ] Implement cart state management (React Context or local storage)
