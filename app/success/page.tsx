@@ -1,13 +1,11 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useCart } from '../../contexts/CartContext';
 
 export default function Success() {
   const { clearCart } = useCart();
-  const router = useRouter();
 
   useEffect(() => {
     // Clear the cart when the success page is loaded
