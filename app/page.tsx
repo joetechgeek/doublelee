@@ -17,8 +17,8 @@ export default async function Home() {
     }
 
     return (
-      <div className="flex flex-col items-center justify-center min-h-screen p-4">
-        <h1 className="text-3xl font-bold mb-6">Double Lee Electronics</h1>
+      <>
+        <h1 className="text-3xl font-bold mb-6">Welcome to Double Lee Electronics</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {products.map((product: Product) => (
             <div key={product.id} className="border rounded-lg p-4 flex flex-col">
@@ -33,7 +33,7 @@ export default async function Home() {
           ))}
         </div>
         <CheckoutButton />
-      </div>
+      </>
     );
   } catch (error) {
     console.error('Render error:', error);

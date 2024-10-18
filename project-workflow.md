@@ -26,8 +26,8 @@
 - [x] Ensure product listing is visible to all users (authenticated and unauthenticated)
 
 ## 4. Navigation and Layout
-- [ ] Create a basic layout component with navbar
-- [ ] Add links for Home, Cart, Login/Register, and Affiliate Program
+- [x] Create a basic layout component with navbar
+- [x] Add links for Home, Cart, Login/Register, and Affiliate Program
 
 ## 5. Authentication
 - [ ] Implement user registration (customers and affiliates)
