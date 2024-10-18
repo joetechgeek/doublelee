@@ -38,9 +38,9 @@
 - [x] Ensure sign-out option is available on all authenticated pages
 
 ## 6. Shopping Cart
-- [ ] Implement cart state management (React Context or local storage)
-- [ ] Create add to cart functionality (available for all users)
-- [ ] Design and implement cart view page
+- [x] Implement cart state management using React Context
+- [x] Create add to cart functionality (available for all users)
+- [x] Design and implement cart view page
 
 ## 7. Checkout Process
 - [ ] Design checkout form (accessible only to logged-in users)
