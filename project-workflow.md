@@ -46,7 +46,8 @@
 
 ## 7. Checkout Process
 - [x] Implement Stripe payment integration with cart items
-- [ ] Create order confirmation page
+- [x] Create order confirmation page
+- [x] Clear cart after successful checkout
 - [ ] Set up basic email confirmation
 
 ## 8. Affiliate System

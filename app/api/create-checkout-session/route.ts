@@ -10,7 +10,7 @@ export async function POST(req: Request) {
       payment_method_types: ['card'],
       line_items: items,
       mode: 'payment',
-      success_url: `${req.headers.get('origin')}/success?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${req.headers.get('origin')}/success`,
       cancel_url: `${req.headers.get('origin')}/cart`,
     });
 
