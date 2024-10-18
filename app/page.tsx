@@ -1,5 +1,5 @@
 import { supabase } from '../utils/supabase'
-// import getStripe from '../utils/stripe'
+import CheckoutButton from './components/CheckoutButton'
 
 export const revalidate = 0; // This tells Next.js to not cache this page
 
@@ -30,12 +30,7 @@ export default async function Home() {
         <p className="text-sm text-gray-500">
           Last updated: {timestamp}
         </p>
-        <button
-          onClick={() => alert('Checkout functionality will be implemented here')}
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Test Stripe Checkout
-        </button>
+        <CheckoutButton />
       </div>
     );
   } catch (error) {
