@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { supabase } from '../../utils/supabase';
 import { useRouter } from 'next/navigation';
+import { AuthError } from '@supabase/supabase-js';
 
 export default function Register() {
   const [email, setEmail] = useState('');
@@ -17,8 +18,12 @@ export default function Register() {
       if (error) throw error;
       alert('Check your email for the confirmation link!');
       router.push('/login');
-    } catch (error: any) {
-      setError(error.message);
+    } catch (error) {
+      if (error instanceof AuthError) {
+        setError(error.message);
+      } else {
+        setError('An unexpected error occurred');
+      }
     }
   };
 
