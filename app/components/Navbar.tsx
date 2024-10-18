@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../../utils/supabase';
 import { User } from '@supabase/supabase-js';
 import { useCart } from '../../contexts/CartContext';
-import { HomeIcon, ShoppingCartIcon, UserIcon, UserPlusIcon, ArrowRightOnRectangleIcon, ArrowLeftOnRectangleIcon, CurrencyDollarIcon } from '@heroicons/react/24/outline';
+import { HomeIcon, ShoppingCartIcon, UserIcon, CurrencyDollarIcon } from '@heroicons/react/24/outline';
 
 const Navbar = () => {
   const pathname = usePathname();
@@ -48,28 +48,25 @@ const Navbar = () => {
               </span>
             )}
           </Link>
+          <Link href="/affiliate" className={`${pathname === '/affiliate' ? 'text-blue-400' : ''} hover:text-blue-300`}>
+            <CurrencyDollarIcon className="h-6 w-6" />
+          </Link>
+        </div>
+        <div className="flex items-center space-x-4">
           {user ? (
             <>
               <Link href="/profile" className={`${pathname === '/profile' ? 'text-blue-400' : ''} hover:text-blue-300`}>
                 <UserIcon className="h-6 w-6" />
               </Link>
-              <button onClick={handleSignOut} className="hover:text-blue-300">
-                <ArrowRightOnRectangleIcon className="h-6 w-6" />
+              <button onClick={handleSignOut} className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
+                Sign Out
               </button>
             </>
           ) : (
-            <>
-              <Link href="/login" className={`${pathname === '/login' ? 'text-blue-400' : ''} hover:text-blue-300`}>
-                <ArrowLeftOnRectangleIcon className="h-6 w-6" />
-              </Link>
-              <Link href="/register" className={`${pathname === '/register' ? 'text-blue-400' : ''} hover:text-blue-300`}>
-                <UserPlusIcon className="h-6 w-6" />
-              </Link>
-            </>
+            <Link href="/login" className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+              Login/Sign Up
+            </Link>
           )}
-          <Link href="/affiliate" className={`${pathname === '/affiliate' ? 'text-blue-400' : ''} hover:text-blue-300`}>
-            <CurrencyDollarIcon className="h-6 w-6" />
-          </Link>
         </div>
       </div>
     </nav>

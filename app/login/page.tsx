@@ -5,6 +5,7 @@ import { supabase } from '../../utils/supabase';
 import { useRouter } from 'next/navigation';
 import { AuthError } from '@supabase/supabase-js';
 import { Suspense } from 'react';
+import Link from 'next/link';
 
 function LoginForm() {
   const [email, setEmail] = useState('');
@@ -78,6 +79,12 @@ function LoginForm() {
         </button>
       </form>
       {error && <p className="text-red-500 mt-3">{error}</p>}
+      <p className="mt-4 text-center">
+        Don't have an account?{' '}
+        <Link href="/register" className="text-blue-500 hover:underline">
+          Sign up here
+        </Link>
+      </p>
     </div>
   );
 }
