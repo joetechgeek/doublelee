@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import stripe from '@/lib/stripe';
+import Stripe from 'stripe';
 
 export async function POST(req: Request) {
   try {
@@ -14,8 +15,11 @@ export async function POST(req: Request) {
     });
 
     return NextResponse.json({ sessionId: session.id });
-  } catch (err: any) {
+  } catch (err) {
     console.error('Error:', err);
-    return NextResponse.json({ error: { message: err.message } }, { status: 500 });
+    if (err instanceof Stripe.errors.StripeError) {
+      return NextResponse.json({ error: { message: err.message } }, { status: err.statusCode });
+    }
+    return NextResponse.json({ error: { message: 'An unexpected error occurred' } }, { status: 500 });
   }
 }
