@@ -2,18 +2,17 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '../../utils/supabase';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { AuthError } from '@supabase/supabase-js';
+import { Suspense } from 'react';
 
-export default function Login() {
+function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
-    // Check if user is already logged in
     const checkUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       if (user) {
@@ -24,11 +23,12 @@ export default function Login() {
   }, []);
 
   const handleRedirect = () => {
-    const redirect = searchParams.get('redirect');
+    const params = new URLSearchParams(window.location.search);
+    const redirect = params.get('redirect');
     if (redirect === 'checkout') {
-      router.push('/cart'); // Redirect to cart page, which has the checkout button
+      router.push('/cart');
     } else {
-      router.push('/'); // Default redirect to home page
+      router.push('/');
     }
   };
 
@@ -79,5 +79,13 @@ export default function Login() {
       </form>
       {error && <p className="text-red-500 mt-3">{error}</p>}
     </div>
+  );
+}
+
+export default function Login() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginForm />
+    </Suspense>
   );
 }
