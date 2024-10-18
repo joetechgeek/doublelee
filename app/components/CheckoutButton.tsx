@@ -14,7 +14,7 @@ const CheckoutButton: React.FC = () => {
         body: JSON.stringify({
           items: [
             {
-              price: 'price_XXXXXXXXXXXXXXXXXXXXXXXX', // Replace with an actual Stripe Price ID
+              price: 'price_1QBJjxFFBSdJ9JiJru4ZKGd7', // Replace with an actual Stripe Price ID
               quantity: 1,
             },
           ],
