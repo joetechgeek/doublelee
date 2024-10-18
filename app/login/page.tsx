@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../../utils/supabase';
 import { useRouter } from 'next/navigation';
 import { AuthError } from '@supabase/supabase-js';
@@ -12,6 +12,16 @@ function LoginForm() {
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 
+  const handleRedirect = useCallback(() => {
+    const params = new URLSearchParams(window.location.search);
+    const redirect = params.get('redirect');
+    if (redirect === 'checkout') {
+      router.push('/cart');
+    } else {
+      router.push('/');
+    }
+  }, [router]);
+
   useEffect(() => {
     const checkUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
@@ -20,17 +30,7 @@ function LoginForm() {
       }
     };
     checkUser();
-  }, []);
-
-  const handleRedirect = () => {
-    const params = new URLSearchParams(window.location.search);
-    const redirect = params.get('redirect');
-    if (redirect === 'checkout') {
-      router.push('/cart');
-    } else {
-      router.push('/');
-    }
-  };
+  }, [handleRedirect]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

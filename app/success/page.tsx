@@ -1,12 +1,10 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useCart } from '../../contexts/CartContext';
 
 export default function Success() {
-  const router = useRouter();
   const { clearCart } = useCart();
 
   useEffect(() => {
