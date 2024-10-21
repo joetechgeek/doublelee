@@ -13,10 +13,6 @@ export default function CheckoutPage() {
   const { cart, getCartTotal, clearCart } = useCart();
   const router = useRouter();
 
-  useEffect(() => {
-    checkAuthentication();
-  }, [checkAuthentication]);
-
   // Define checkAuthentication with useCallback
   const checkAuthentication = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser();
@@ -24,6 +20,10 @@ export default function CheckoutPage() {
       router.push('/login?redirect=/checkout');
     }
   }, [router]);
+
+  useEffect(() => {
+    checkAuthentication();
+  }, [checkAuthentication]);
 
   const handleApplyCoupon = async () => {
     setIsLoading(true);
