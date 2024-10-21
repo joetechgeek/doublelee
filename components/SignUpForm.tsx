@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { supabase } from '../utils/supabase';
-import { useRouter } from 'next/router';
 import { generateUniqueCouponCode } from '../utils/couponGenerator';
 
 export default function SignUpForm() {
