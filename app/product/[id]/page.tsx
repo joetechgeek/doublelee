@@ -21,10 +21,6 @@ export default function ProductPage() {
   const { id } = useParams();
   const { addToCart } = useCart();
 
-  useEffect(() => {
-    fetchProduct();
-  }, [id, fetchProduct]);
-
   const fetchProduct = useCallback(async () => {
     const { data, error } = await supabase
       .from('products')
@@ -38,6 +34,10 @@ export default function ProductPage() {
       setProduct(data);
     }
   }, [id]);
+
+  useEffect(() => {
+    fetchProduct();
+  }, [fetchProduct]);
 
   const handleAddToCart = () => {
     if (product) {

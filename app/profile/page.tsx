@@ -2,16 +2,20 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../../utils/supabase';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
+
+type Profile = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_number: string;
+  coupon_code: string;
+};
 
 export default function Profile() {
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
-
-  useEffect(() => {
-    fetchProfile();
-  }, [fetchProfile]);
 
   const fetchProfile = useCallback(async () => {
     try {
@@ -30,13 +34,17 @@ export default function Profile() {
 
       if (error) throw error;
 
-      setProfile(data);
+      setProfile(data as Profile);
     } catch (error) {
-      console.error('Error fetching profile:', error.message);
+      console.error('Error fetching profile:', error instanceof Error ? error.message : 'Unknown error');
     } finally {
       setLoading(false);
     }
   }, [router]);
+
+  useEffect(() => {
+    fetchProfile();
+  }, [fetchProfile]);
 
   if (loading) return <div>Loading...</div>;
 
