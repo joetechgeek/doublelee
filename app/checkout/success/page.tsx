@@ -1,7 +1,71 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Navbar from '../../../components/Navbar';
+import { stripe } from '../../../utils/stripe';
+import { supabase } from '../../../utils/supabase';
 
 export default function CheckoutSuccessPage() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const sessionId = searchParams.get('session_id');
+
+  useEffect(() => {
+    if (sessionId) {
+      handlePaymentSuccess(sessionId);
+    }
+  }, [sessionId]);
+
+  const handlePaymentSuccess = async (sessionId: string) => {
+    try {
+      const session = await stripe.checkout.sessions.retrieve(sessionId);
+      const { userId, couponCode, couponOwner } = session.metadata as { userId: string; couponCode?: string; couponOwner?: string };
+
+      // Create order in the database
+      const { data: orderData, error: orderError } = await supabase
+        .from('orders')
+        .insert({
+          user_id: userId,
+          total_amount: session.amount_total! / 100, // Convert from cents to dollars
+          coupon_code: couponCode,
+          issued_by: couponOwner,
+        })
+        .select()
+        .single();
+
+      if (orderError) throw orderError;
+
+      // If a coupon was used, create a commission record
+      if (couponOwner) {
+        const commissionAmount = (session.amount_total! / 100) * 0.1; // 10% commission
+        await supabase
+          .from('commissions')
+          .insert({
+            issuer_id: couponOwner,
+            order_id: orderData.id,
+            commission_amount: commissionAmount,
+          });
+      }
+
+      setIsLoading(false);
+    } catch (err: any) {
+      console.error('Error processing successful payment:', err);
+      setError(err.message);
+      setIsLoading(false);
+    }
+  };
+
+  if (isLoading) {
+    return <div>Processing your order...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
   return (
     <div className="min-h-screen bg-gray-100">
       <Navbar />

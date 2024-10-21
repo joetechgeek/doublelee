@@ -4,11 +4,12 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../contexts/CartContext';
 import { supabase } from '../utils/supabase';
+import { stripePromise } from '../utils/stripe';
 
 export default function CheckoutButton() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { cart, getCartTotal } = useCart();
+  const { cart } = useCart();
 
   const handleCheckout = async () => {
     setIsLoading(true);
@@ -21,16 +22,32 @@ export default function CheckoutButton() {
       return;
     }
 
-    // Here you would typically create a Stripe Checkout session
-    // For this example, we'll just simulate the process
     try {
-      // Simulate API call to create Stripe session
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Create a Stripe Checkout session
+      const response = await fetch('/api/create-checkout-session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          items: cart,
+          userId: user.id,
+          // You can add coupon code here if it's available in the cart context
+        }),
+      });
 
-      // Redirect to a simulated Stripe Checkout page
-      router.push('/checkout');
+      const { sessionId } = await response.json();
+
+      // Redirect to Stripe Checkout
+      const stripe = await stripePromise;
+      const { error } = await stripe!.redirectToCheckout({ sessionId });
+
+      if (error) {
+        console.error('Stripe checkout error:', error);
+      }
     } catch (error) {
       console.error('Error creating checkout session:', error);
+    } finally {
       setIsLoading(false);
     }
   };
