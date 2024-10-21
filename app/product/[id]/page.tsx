@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import { supabase } from '../../../utils/supabase';
 import { useCart } from '../../../contexts/CartContext';
 import Navbar from '../../../components/Navbar';
+import Image from 'next/image';
 
 type Product = {
   id: number;
@@ -22,9 +23,9 @@ export default function ProductPage() {
 
   useEffect(() => {
     fetchProduct();
-  }, [id]);
+  }, [id, fetchProduct]);
 
-  async function fetchProduct() {
+  const fetchProduct = useCallback(async () => {
     const { data, error } = await supabase
       .from('products')
       .select('*')
@@ -36,7 +37,7 @@ export default function ProductPage() {
     } else {
       setProduct(data);
     }
-  }
+  }, [id]);
 
   const handleAddToCart = () => {
     if (product) {
@@ -53,7 +54,7 @@ export default function ProductPage() {
       <Navbar />
       <main className="container mx-auto py-8">
         <div className="bg-white rounded-lg shadow-md p-6">
-          <img src={product.image_url} alt={product.name} className="w-full h-64 object-cover mb-6 rounded" />
+          <Image src={product.image_url} alt={product.name} width={500} height={300} className="w-full h-64 object-cover mb-6 rounded" />
           <h1 className="text-3xl font-bold mb-4">{product.name}</h1>
           <p className="text-gray-600 mb-4">{product.description}</p>
           <p className="text-2xl font-bold mb-6">${product.price.toFixed(2)}</p>

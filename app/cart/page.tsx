@@ -1,13 +1,11 @@
 'use client';
 
 import { useCart } from '../../contexts/CartContext';
-import { useRouter } from 'next/navigation';
 import Navbar from '../../components/Navbar';
 import CheckoutButton from '../../components/CheckoutButton';
 
 export default function CartPage() {
   const { cart, removeFromCart, getCartTotal } = useCart();
-  const router = useRouter();
 
   return (
     <div className="min-h-screen bg-gray-100">

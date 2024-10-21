@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { supabase } from '../../utils/supabase';
 import { useRouter } from 'next/router';
 
@@ -11,9 +11,9 @@ export default function Profile() {
 
   useEffect(() => {
     fetchProfile();
-  }, []);
+  }, [fetchProfile]);
 
-  const fetchProfile = async () => {
+  const fetchProfile = useCallback(async () => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       
@@ -36,7 +36,7 @@ export default function Profile() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [router]);
 
   if (loading) return <div>Loading...</div>;
 

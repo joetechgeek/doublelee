@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useCart } from '../contexts/CartContext';
+import Image from 'next/image';
 
 type ProductCardProps = {
   id: number;
@@ -24,7 +25,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ id, name, price, description,
   return (
     <Link href={`/product/${id}`} className="block">
       <div className="border rounded-lg p-4 shadow-md hover:shadow-lg transition-shadow">
-        <img src={image_url} alt={name} className="w-full h-48 object-cover mb-4 rounded" />
+        <Image src={image_url} alt={name} width={300} height={200} className="w-full h-48 object-cover mb-4 rounded" />
         <h2 className="text-xl font-semibold mb-2">{name}</h2>
         <p className="text-gray-600 mb-2 truncate">{description}</p>
         <p className="text-lg font-bold mb-4">${price.toFixed(2)}</p>

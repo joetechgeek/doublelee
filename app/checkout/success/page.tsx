@@ -51,9 +51,9 @@ export default function CheckoutSuccessPage() {
       }
 
       setIsLoading(false);
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error processing successful payment:', err);
-      setError(err.message);
+      setError(err instanceof Error ? err.message : 'An unknown error occurred');
       setIsLoading(false);
     }
   };

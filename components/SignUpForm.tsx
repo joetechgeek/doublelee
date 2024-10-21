@@ -43,7 +43,11 @@ export default function SignUpForm() {
         router.push('/profile');
       }
     } catch (error) {
-      setError(error.message);
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError('An unexpected error occurred');
+      }
     }
   };
 

@@ -33,7 +33,7 @@ export async function POST(req: Request) {
       // Create Stripe checkout session
       const session = await stripe.checkout.sessions.create({
         payment_method_types: ['card'],
-        line_items: items.map((item: any) => ({
+        line_items: items.map((item: { name: string; price: number; quantity: number }) => ({
           price_data: {
             currency: 'usd',
             product_data: {
@@ -55,9 +55,9 @@ export async function POST(req: Request) {
       });
 
       return NextResponse.json({ sessionId: session.id });
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Error creating checkout session:', err);
-      return NextResponse.json({ error: { message: err.message } }, { status: 500 });
+      return NextResponse.json({ error: { message: err instanceof Error ? err.message : 'An unknown error occurred' } }, { status: 500 });
     }
   } else {
     return NextResponse.json({ error: { message: 'Method not allowed' } }, { status: 405 });

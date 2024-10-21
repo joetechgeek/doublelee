@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '../../contexts/CartContext';
 import { supabase } from '../../utils/supabase';
@@ -15,14 +15,15 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     checkAuthentication();
-  }, []);
+  }, [checkAuthentication]);
 
-  const checkAuthentication = async () => {
+  // Define checkAuthentication with useCallback
+  const checkAuthentication = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) {
       router.push('/login?redirect=/checkout');
     }
-  };
+  }, [router]);
 
   const handleApplyCoupon = async () => {
     setIsLoading(true);
