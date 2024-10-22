@@ -27,17 +27,31 @@ export default function Header() {
               </Link>
             </li>
             {user ? (
-              <li>
-                <button onClick={signOut} className="text-lg text-foreground hover:text-secondary transition-colors duration-200">
-                  Logout
-                </button>
-              </li>
+              <>
+                <li>
+                  <Link href="/profile" className="text-lg text-foreground hover:text-secondary transition-colors duration-200">
+                    Profile
+                  </Link>
+                </li>
+                <li>
+                  <button onClick={signOut} className="text-lg text-foreground hover:text-secondary transition-colors duration-200">
+                    Logout
+                  </button>
+                </li>
+              </>
             ) : (
-              <li>
-                <Link href="/login" className="text-lg text-foreground hover:text-secondary transition-colors duration-200">
-                  Login
-                </Link>
-              </li>
+              <>
+                <li>
+                  <Link href="/login" className="text-lg text-foreground hover:text-secondary transition-colors duration-200">
+                    Login
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/signup" className="text-lg text-foreground hover:text-secondary transition-colors duration-200">
+                    Sign Up
+                  </Link>
+                </li>
+              </>
             )}
           </ul>
         </nav>

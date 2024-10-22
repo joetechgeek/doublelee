@@ -10,6 +10,8 @@
 - [x] Implement Supabase authentication
 - [x] Create login page
 - [x] Create signup page
+- [x] Add sign-up link to header
+- [x] Implement error handling in login page
 - [ ] Implement logout functionality
 - [x] Update sign-up process to create profile entry
 - [x] Implement coupon code generation (FNALST123 format)
