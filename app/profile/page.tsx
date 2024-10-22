@@ -1,21 +1,25 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@supabase/supabase-js';
 
 const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);
 
+interface Profile {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  coupon_code: string;
+}
+
 export default function Profile() {
-  const [profile, setProfile] = useState<any>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
 
-  useEffect(() => {
-    fetchProfile();
-  }, []);
-
-  async function fetchProfile() {
+  const fetchProfile = useCallback(async () => {
     const { data: { user } } = await supabase.auth.getUser();
     if (user) {
       const { data, error } = await supabase
@@ -32,11 +36,17 @@ export default function Profile() {
     } else {
       router.push('/login');
     }
-  }
+  }, [router]);
+
+  useEffect(() => {
+    fetchProfile();
+  }, [fetchProfile]);
 
   async function updateProfile(e: React.FormEvent) {
     e.preventDefault();
-    const { data, error } = await supabase
+    if (!profile) return;
+
+    const { error } = await supabase
       .from('profiles')
       .update({
         first_name: profile.first_name,
