@@ -2,14 +2,12 @@
 
 import { useCart } from '@/contexts/CartContext';
 import { loadStripe } from '@stripe/stripe-js';
-import { useRouter } from 'next/navigation';
 
 // Replace with your actual Stripe publishable key
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 export default function CartPage() {
-  const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
-  const router = useRouter();
+  const { cart, removeFromCart, updateQuantity } = useCart();
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -31,10 +29,6 @@ export default function CartPage() {
 
     if (result?.error) {
       console.error(result.error.message);
-    } else {
-      // Clear the cart and redirect to success page
-      clearCart();
-      router.push('/success');
     }
   };
 
@@ -78,7 +72,7 @@ export default function CartPage() {
             <h2 className="text-2xl font-bold text-primary">Total: ${total.toFixed(2)}</h2>
             <button
               onClick={handleCheckout}
-              className="mt-6 bg-primary text-background px-8 py-3 rounded-lg text-lg font-semibold hover:bg-opacity-80 transition-colors duration-200 border border-secondary"
+              className="mt-6 bg-primary text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-opacity-80 transition-colors duration-200 border border-secondary"
             >
               Proceed to Checkout
             </button>

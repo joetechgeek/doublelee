@@ -1,6 +1,16 @@
+'use client';
+
 import Link from 'next/link';
+import { useEffect } from 'react';
+import { useCart } from '@/contexts/CartContext';
 
 export default function SuccessPage() {
+  const { clearCart } = useCart();
+
+  useEffect(() => {
+    clearCart();
+  }, [clearCart]);
+
   return (
     <div className="container mx-auto px-4 py-16 text-center">
       <h1 className="text-4xl font-bold text-primary mb-6">Thank You for Your Purchase!</h1>
@@ -13,7 +23,7 @@ export default function SuccessPage() {
       <div className="mb-12">
         <Link 
           href="/" 
-          className="inline-block bg-primary text-background px-8 py-4 rounded-lg font-semibold text-lg hover:bg-opacity-80 transition-colors duration-200 shadow-lg border border-secondary"
+          className="inline-block bg-primary text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-opacity-80 transition-colors duration-200 shadow-lg border border-secondary"
         >
           Continue Shopping
         </Link>
