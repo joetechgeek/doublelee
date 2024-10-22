@@ -26,7 +26,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   }, [isAdded]);
 
   return (
-    <div className="border rounded-lg overflow-hidden shadow-lg bg-gray-800">
+    <div className="border rounded-lg overflow-hidden shadow-lg bg-gray-800 flex flex-col h-full">
       <Image
         src={product.image_url}
         alt={product.alt_image || product.name}
@@ -34,10 +34,10 @@ export default function ProductCard({ product }: ProductCardProps) {
         height={300}
         className="w-full h-48 object-cover"
       />
-      <div className="p-4">
+      <div className="p-4 flex flex-col flex-grow">
         <h2 className="text-xl font-semibold mb-2 text-primary">{product.name}</h2>
-        <p className="text-gray-300 mb-2">{product.description}</p>
-        <div className="flex justify-between items-center">
+        <p className="text-gray-300 mb-2 flex-grow">{product.description}</p>
+        <div className="flex justify-between items-center mt-auto">
           <span className="text-lg font-bold text-secondary">${product.price.toFixed(2)}</span>
           <button 
             onClick={handleAddToCart}
