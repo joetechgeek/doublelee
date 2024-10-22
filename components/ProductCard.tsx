@@ -3,6 +3,7 @@
 import Image from 'next/image'
 import { Product } from '@/types/product'
 import { useCart } from '@/contexts/CartContext'
+import { useState, useEffect } from 'react'
 
 type ProductCardProps = {
   product: Product
@@ -10,6 +11,19 @@ type ProductCardProps = {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
+  const [isAdded, setIsAdded] = useState(false);
+
+  const handleAddToCart = () => {
+    addToCart(product);
+    setIsAdded(true);
+  };
+
+  useEffect(() => {
+    if (isAdded) {
+      const timer = setTimeout(() => setIsAdded(false), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [isAdded]);
 
   return (
     <div className="border rounded-lg overflow-hidden shadow-lg bg-gray-800">
@@ -26,10 +40,14 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div className="flex justify-between items-center">
           <span className="text-lg font-bold text-secondary">${product.price.toFixed(2)}</span>
           <button 
-            onClick={() => addToCart(product)}
-            className="bg-primary text-background px-4 py-2 rounded hover:bg-opacity-80"
+            onClick={handleAddToCart}
+            className={`px-4 py-2 rounded transition-colors duration-200 ${
+              isAdded 
+                ? 'bg-green-500 text-white' 
+                : 'bg-primary text-background hover:bg-opacity-80'
+            }`}
           >
-            Add to Cart
+            {isAdded ? 'Added to Cart' : 'Add to Cart'}
           </button>
         </div>
       </div>
