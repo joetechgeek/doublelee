@@ -48,6 +48,7 @@
 - [x] Fix type issues in order detail page
 - [x] Resolve Next.js dynamic route type errors
 - [x] Remove unused parameters in order detail page
+- [x] Fix params type in order detail page
 
 ## Commission System
 - [ ] Implement commission tracking for coupon usage (10% commission)
