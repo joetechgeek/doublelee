@@ -17,14 +17,21 @@ interface CartContextType {
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [cart, setCart] = useState<CartItem[]>(() => {
-    if (typeof window !== 'undefined') {
-      const savedCart = localStorage.getItem('cart');
-      return savedCart ? JSON.parse(savedCart) : [];
-    }
-    return [];
-  });
+  const [cart, setCart] = useState<CartItem[]>([]);
   const [cartCount, setCartCount] = useState(0);
+
+  useEffect(() => {
+    const savedCart = localStorage.getItem('cart');
+    if (savedCart) {
+      setCart(JSON.parse(savedCart));
+    }
+
+    const clearCartFlag = localStorage.getItem('clearCart');
+    if (clearCartFlag === 'true') {
+      setCart([]);
+      localStorage.removeItem('clearCart');
+    }
+  }, []);
 
   useEffect(() => {
     const count = cart.reduce((total, item) => total + item.quantity, 0);
@@ -58,6 +65,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const clearCart = () => {
     setCart([]);
+    localStorage.setItem('clearCart', 'true');
   };
 
   return (

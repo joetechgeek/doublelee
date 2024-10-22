@@ -2,14 +2,12 @@
 
 import { useCart } from '@/contexts/CartContext';
 import { loadStripe } from '@stripe/stripe-js';
-import { useRouter } from 'next/navigation';
 
 // Replace with your actual Stripe publishable key
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity, clearCart } = useCart();
-  const router = useRouter();
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
@@ -25,17 +23,17 @@ export default function CartPage() {
 
     const session = await response.json();
 
+    // Set a flag to clear the cart after successful checkout
+    localStorage.setItem('clearCart', 'true');
+
     const result = await stripe?.redirectToCheckout({
       sessionId: session.id,
     });
 
     if (result?.error) {
       console.error(result.error.message);
-    } else {
-      // Clear the cart after successful checkout
-      clearCart();
-      // Redirect to success page
-      router.push('/success');
+      // If there's an error, remove the clear cart flag
+      localStorage.removeItem('clearCart');
     }
   };
 

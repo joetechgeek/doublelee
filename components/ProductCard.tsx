@@ -44,7 +44,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             className={`px-4 py-2 rounded transition-colors duration-200 ${
               isAdded 
                 ? 'bg-green-500 text-white' 
-                : 'bg-primary text-background hover:bg-opacity-80'
+                : 'bg-primary text-white hover:bg-opacity-80'
             }`}
           >
             {isAdded ? 'Added to Cart' : 'Add to Cart'}
