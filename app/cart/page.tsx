@@ -4,7 +4,7 @@ import { useCart } from '@/contexts/CartContext';
 import { loadStripe } from '@stripe/stripe-js';
 
 // Replace with your actual Stripe publishable key
-const stripePromise = loadStripe('your_stripe_publishable_key');
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity } = useCart();
@@ -72,7 +72,7 @@ export default function CartPage() {
             <h2 className="text-xl font-bold text-primary">Total: ${total.toFixed(2)}</h2>
             <button
               onClick={handleCheckout}
-              className="mt-4 bg-secondary text-background px-6 py-2 rounded hover:bg-opacity-80"
+              className="mt-4 bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
             >
               Proceed to Checkout
             </button>
