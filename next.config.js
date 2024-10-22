@@ -4,6 +4,7 @@ const nextConfig = {
   images: {
     domains: ['images.unsplash.com', 'example.com'], // Add the domains you're loading images from
   },
+  output: 'standalone',
 }
 
 module.exports = nextConfig

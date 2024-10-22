@@ -1,19 +1,17 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useCart } from '@/contexts/CartContext';
 import { useSearchParams } from 'next/navigation';
 
-export default function SuccessPage() {
+function SuccessContent() {
   const { clearCart } = useCart();
   const searchParams = useSearchParams();
 
   useEffect(() => {
     const sessionId = searchParams.get('session_id');
     if (sessionId) {
-      // Here you would typically verify the payment with Stripe
-      // and update your database accordingly
       clearCart();
     }
   }, [searchParams, clearCart]);
@@ -36,5 +34,13 @@ export default function SuccessPage() {
         </Link>
       </div>
     </div>
+  );
+}
+
+export default function SuccessPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <SuccessContent />
+    </Suspense>
   );
 }
