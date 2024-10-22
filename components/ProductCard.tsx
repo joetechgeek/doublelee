@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image'
+import Link from 'next/link'
 import { Product } from '@/types/product'
 import { useCart } from '@/contexts/CartContext'
 import { useState, useEffect } from 'react'
@@ -27,15 +28,19 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   return (
     <div className="border border-gray-700 rounded-lg overflow-hidden shadow-lg bg-gray-800 flex flex-col h-full">
-      <Image
-        src={product.image_url}
-        alt={product.alt_image || product.name}
-        width={300}
-        height={300}
-        className="w-full h-48 object-cover"
-      />
+      <Link href={`/products/${product.id}`}>
+        <Image
+          src={product.image_url}
+          alt={product.alt_image || product.name}
+          width={300}
+          height={300}
+          className="w-full h-48 object-cover"
+        />
+      </Link>
       <div className="p-4 flex flex-col flex-grow">
-        <h2 className="text-xl font-semibold mb-2 text-primary">{product.name}</h2>
+        <Link href={`/products/${product.id}`}>
+          <h2 className="text-xl font-semibold mb-2 text-primary">{product.name}</h2>
+        </Link>
         <p className="text-gray-300 mb-2 flex-grow">{product.description}</p>
         <div className="flex justify-between items-center mt-auto">
           <span className="text-lg font-bold text-secondary">${product.price.toFixed(2)}</span>
@@ -46,8 +51,9 @@ export default function ProductCard({ product }: ProductCardProps) {
                 ? 'bg-green-500 text-white' 
                 : 'bg-primary text-white hover:bg-opacity-80'
             }`}
+            disabled={product.stock === 0}
           >
-            {isAdded ? 'Added to Cart' : 'Add to Cart'}
+            {product.stock === 0 ? 'Out of Stock' : isAdded ? 'Added to Cart' : 'Add to Cart'}
           </button>
         </div>
       </div>

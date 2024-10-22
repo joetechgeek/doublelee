@@ -21,9 +21,9 @@
 ## Product Management
 - [x] Create product listing page
 - [x] Implement ProductCard component
-- [ ] Create product detail page
+- [x] Create product detail page
 - [ ] Implement admin panel for product management
-- [ ] Implement stock tracking functionality
+- [x] Implement stock tracking functionality
 
 ## Shopping Cart
 - [x] Implement cart functionality using React Context
@@ -31,14 +31,14 @@
 - [x] Implement add to cart feature
 - [x] Implement remove from cart feature
 - [x] Implement update quantity feature
-- [ ] Add stock check when adding to cart
+- [x] Add stock check when adding to cart
 
 ## Checkout Process
 - [x] Integrate Stripe for payments
 - [x] Implement checkout functionality
-- [ ] Apply coupon code during checkout (10% discount)
-- [ ] Calculate and apply discounts
-- [ ] Update stock levels after successful purchase
+- [x] Apply coupon code during checkout (10% discount)
+- [x] Calculate and apply discounts
+- [x] Update stock levels after successful purchase
 
 ## Order Management
 - [ ] Create order history page

@@ -1,23 +1,35 @@
 'use client'
 
+import { useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { loadStripe } from '@stripe/stripe-js';
 import { useRouter } from 'next/navigation';
 
-// Replace with your actual Stripe publishable key
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 export default function CartPage() {
-  const { cart, removeFromCart, updateQuantity } = useCart();
+  const { cart, removeFromCart, updateQuantity, couponDiscount, applyCoupon } = useCart();
   const { user } = useAuth();
   const router = useRouter();
+  const [couponCode, setCouponCode] = useState('');
+  const [couponError, setCouponError] = useState('');
 
-  const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const discount = subtotal * couponDiscount;
+  const total = subtotal - discount;
+
+  const handleApplyCoupon = async () => {
+    const success = await applyCoupon(couponCode);
+    if (!success) {
+      setCouponError('Invalid coupon code');
+    } else {
+      setCouponError('');
+    }
+  };
 
   const handleCheckout = async () => {
     if (!user) {
-      // Redirect to login page if user is not authenticated
       router.push('/login');
       return;
     }
@@ -28,7 +40,10 @@ export default function CartPage() {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ items: cart }),
+      body: JSON.stringify({ 
+        items: cart,
+        couponCode: couponDiscount > 0 ? couponCode : null
+      }),
     });
 
     const session = await response.json();
@@ -79,7 +94,26 @@ export default function CartPage() {
             </div>
           ))}
           <div className="mt-8">
-            <h2 className="text-2xl font-bold text-primary">Total: ${total.toFixed(2)}</h2>
+            <h2 className="text-2xl font-bold text-primary">Order Summary</h2>
+            <p>Subtotal: ${subtotal.toFixed(2)}</p>
+            {couponDiscount > 0 && <p>Discount: -${discount.toFixed(2)}</p>}
+            <p className="text-xl font-bold">Total: ${total.toFixed(2)}</p>
+            <div className="mt-4">
+              <input
+                type="text"
+                value={couponCode}
+                onChange={(e) => setCouponCode(e.target.value)}
+                placeholder="Enter coupon code"
+                className="px-3 py-2 border border-gray-300 rounded-md"
+              />
+              <button
+                onClick={handleApplyCoupon}
+                className="ml-2 bg-secondary text-white px-4 py-2 rounded-md"
+              >
+                Apply Coupon
+              </button>
+              {couponError && <p className="text-red-500 mt-2">{couponError}</p>}
+            </div>
             <button
               onClick={handleCheckout}
               className="mt-6 bg-primary text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-opacity-80 transition-colors duration-200 border border-secondary"

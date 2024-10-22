@@ -1,6 +1,23 @@
+'use client';
+
+import { useEffect } from 'react';
 import Link from 'next/link';
+import { useCart } from '@/contexts/CartContext';
+import { useSearchParams } from 'next/navigation';
 
 export default function SuccessPage() {
+  const { clearCart } = useCart();
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const sessionId = searchParams.get('session_id');
+    if (sessionId) {
+      // Here you would typically verify the payment with Stripe
+      // and update your database accordingly
+      clearCart();
+    }
+  }, [searchParams, clearCart]);
+
   return (
     <div className="container mx-auto px-4 py-16 text-center">
       <h1 className="text-4xl font-bold text-primary mb-6">Thank You for Your Purchase!</h1>
@@ -18,9 +35,6 @@ export default function SuccessPage() {
           Continue Shopping
         </Link>
       </div>
-      <p className="text-lg text-foreground">
-        We hope you enjoy your purchase! Click the button above to browse more products.
-      </p>
     </div>
   );
 }
