@@ -33,17 +33,12 @@ export default function CartPage() {
 
     const session = await response.json();
 
-    // Set a flag to clear the cart after successful checkout
-    localStorage.setItem('clearCart', 'true');
-
     const result = await stripe?.redirectToCheckout({
       sessionId: session.id,
     });
 
     if (result?.error) {
       console.error(result.error.message);
-      // If there's an error, remove the clear cart flag
-      localStorage.removeItem('clearCart');
     }
   };
 
