@@ -30,11 +30,13 @@ export async function POST(req: Request) {
     const session = event.data.object as Stripe.Checkout.Session;
     
     // Here you would typically update your database
-    // For now, we'll just log the session ID
     console.log(`Payment successful for session: ${session.id}`);
 
-    // You can emit an event or update a database here to clear the cart
-    // For example, you could set a flag in your database that the client can check
+    // Set a flag in localStorage to clear the cart
+    // This will be picked up by the client-side code
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('clearCart', 'true');
+    }
   }
 
   return NextResponse.json({ received: true });
