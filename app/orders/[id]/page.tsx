@@ -5,10 +5,6 @@ import { Order } from '@/types/order'
 
 export const dynamic = 'force-dynamic'
 
-type Params = {
-  id: string;
-}
-
 export async function generateStaticParams() {
   const supabase = createServerComponentClient({ cookies })
   const { data: orders } = await supabase.from('orders').select('id')
@@ -45,13 +41,11 @@ async function getOrder(id: string) {
   return order as Order;
 }
 
-interface PageProps {
-  params: Params;
-  searchParams: { [key: string]: string | string[] | undefined };
-}
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default async function OrderDetail({ params, searchParams }: PageProps) {
+export default async function OrderDetail({
+  params,
+}: {
+  params: { id: string };
+}) {
   const order = await getOrder(params.id);
 
   if (!order) {
