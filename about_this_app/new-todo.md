@@ -41,9 +41,9 @@
 - [x] Update stock levels after successful purchase
 
 ## Order Management
-- [ ] Create order history page
-- [ ] Implement order tracking functionality
-- [ ] Store order details in Supabase
+- [x] Create order history page
+- [x] Implement order tracking functionality
+- [x] Store order details in Supabase
 
 ## Commission System
 - [ ] Implement commission tracking for coupon usage (10% commission)

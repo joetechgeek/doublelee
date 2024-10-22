@@ -38,6 +38,13 @@ export default function Header() {
                     Logout
                   </button>
                 </li>
+                {user && (
+                  <li>
+                    <Link href="/orders" className="text-lg text-foreground hover:text-secondary transition-colors duration-200">
+                      Orders
+                    </Link>
+                  </li>
+                )}
               </>
             ) : (
               <>
