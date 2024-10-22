@@ -5,23 +5,17 @@ import { Order } from '@/types/order'
 
 export const dynamic = 'force-dynamic'
 
-interface PageProps {
-  params: { id: string }
+type Params = {
+  id: string;
 }
 
-export async function generateStaticParams() {
-  const supabase = createServerComponentClient({ cookies })
-  const { data: orders } = await supabase.from('orders').select('id')
-  return orders?.map(({ id }) => ({ id })) || []
-}
-
-export default async function OrderDetail({ params }: PageProps) {
+async function getOrder(id: string) {
   const supabase = createServerComponentClient({ cookies })
 
   const { data: { user } } = await supabase.auth.getUser()
 
   if (!user) {
-    return <div>Please log in to view order details.</div>
+    return null;
   }
 
   const { data: order, error } = await supabase
@@ -33,28 +27,36 @@ export default async function OrderDetail({ params }: PageProps) {
         product:products (*)
       )
     `)
-    .eq('id', params.id)
+    .eq('id', id)
     .eq('user_id', user.id)
     .single()
 
   if (error || !order) {
     console.error('Error fetching order:', error)
-    return notFound()
+    return null;
   }
 
-  const typedOrder = order as Order
+  return order as Order;
+}
+
+export default async function OrderDetail({ params }: { params: Params }) {
+  const order = await getOrder(params.id);
+
+  if (!order) {
+    return notFound();
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Order Details</h1>
       <div className="mb-8 p-4 border rounded-lg">
-        <h2 className="text-xl font-semibold mb-2">Order #{typedOrder.id.slice(0, 8)}</h2>
-        <p>Date: {new Date(typedOrder.created_at).toLocaleDateString()}</p>
-        <p>Status: {typedOrder.status}</p>
-        <p>Total: ${typedOrder.total_amount.toFixed(2)}</p>
+        <h2 className="text-xl font-semibold mb-2">Order #{order.id.slice(0, 8)}</h2>
+        <p>Date: {new Date(order.created_at).toLocaleDateString()}</p>
+        <p>Status: {order.status}</p>
+        <p>Total: ${order.total_amount.toFixed(2)}</p>
         <h3 className="text-lg font-semibold mt-4 mb-2">Items:</h3>
         <ul>
-          {typedOrder.order_items.map((item) => (
+          {order.order_items.map((item) => (
             <li key={item.id} className="mb-2">
               <div>{item.product.name}</div>
               <div>Quantity: {item.quantity}</div>

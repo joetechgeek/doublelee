@@ -50,7 +50,7 @@
 - [x] Remove unused parameters in order detail page
 - [x] Fix params type in order detail page
 - [x] Address Next.js 15.0.0 specific type requirements for dynamic routes
-- [x] Implement generateStaticParams for order detail pages
+- [x] Refactor order detail page to handle async data fetching correctly
 
 ## Commission System
 - [ ] Implement commission tracking for coupon usage (10% commission)
