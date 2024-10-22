@@ -15,7 +15,6 @@ export async function generateStaticParams() {
   return orders?.map(({ id }) => ({ id: id.toString() })) || []
 }
 
-
 async function getOrder(id: string) {
   const supabase = createServerComponentClient({ cookies })
 
@@ -48,10 +47,9 @@ async function getOrder(id: string) {
 
 interface PageProps {
   params: Params;
-  searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export default async function OrderDetail({ params, searchParams }: PageProps) {
+export default async function OrderDetail({ params }: PageProps) {
   const order = await getOrder(params.id);
 
   if (!order) {
