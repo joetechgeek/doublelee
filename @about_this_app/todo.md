@@ -1,10 +1,10 @@
 # Todo List
 
 ## Setup Supabase and Stripe
-- [ ] Create a Supabase client utility file
-- [ ] Set up Supabase environment variables
+- [x] Create a Supabase client utility file
+- [x] Set up Supabase environment variables
 - [x] Create a Stripe client utility file
-- [ ] Set up Stripe environment variables
+- [x] Set up Stripe environment variables
 
 ## Display Products on Homepage
 - [x] Create a new component `ProductCard.tsx` in `components` folder
@@ -41,5 +41,11 @@
 - [x] Ensure all client-side components are properly marked with "use client"
 - [x] Test and debug cart functionality
 - [x] Fix ESLint error in create-checkout-session route
+
+## Authentication
+- [x] Implement Supabase authentication
+- [x] Create AuthContext for managing authentication state
+- [x] Add login page
+- [x] Protect checkout process with authentication
 
 Remember to use Tailwind CSS for styling and leverage Next.js 13 App Router features for efficient routing and data fetching.

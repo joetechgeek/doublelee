@@ -1,17 +1,27 @@
 'use client'
 
 import { useCart } from '@/contexts/CartContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { loadStripe } from '@stripe/stripe-js';
+import { useRouter } from 'next/navigation';
 
 // Replace with your actual Stripe publishable key
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 export default function CartPage() {
   const { cart, removeFromCart, updateQuantity } = useCart();
+  const { user } = useAuth();
+  const router = useRouter();
 
   const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   const handleCheckout = async () => {
+    if (!user) {
+      // Redirect to login page if user is not authenticated
+      router.push('/login');
+      return;
+    }
+
     const stripe = await stripePromise;
     const response = await fetch('/api/create-checkout-session', {
       method: 'POST',

@@ -2,9 +2,11 @@
 
 import Link from 'next/link'
 import { useCart } from '@/contexts/CartContext'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function Header() {
   const { cartCount } = useCart();
+  const { user, signOut } = useAuth();
 
   return (
     <header className="bg-gray-900 shadow-md">
@@ -24,6 +26,19 @@ export default function Header() {
                 Cart ({cartCount})
               </Link>
             </li>
+            {user ? (
+              <li>
+                <button onClick={signOut} className="text-lg text-foreground hover:text-secondary transition-colors duration-200">
+                  Logout
+                </button>
+              </li>
+            ) : (
+              <li>
+                <Link href="/login" className="text-lg text-foreground hover:text-secondary transition-colors duration-200">
+                  Login
+                </Link>
+              </li>
+            )}
           </ul>
         </nav>
       </div>
