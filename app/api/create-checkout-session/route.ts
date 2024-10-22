@@ -6,7 +6,8 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2023-08-16',
 });
 
-const BASE_URL = process.env.NEXT_PUBLIC_URL || 'http://localhost:3000';
+// Replace this with your actual live site URL
+const LIVE_SITE_URL = 'https://doublelee.vercel.app';
 
 export async function POST(req: Request) {
   const { items } = await req.json() as { items: CartItem[] };
@@ -24,8 +25,8 @@ export async function POST(req: Request) {
       quantity: item.quantity,
     })),
     mode: 'payment',
-    success_url: `${BASE_URL}/success`,
-    cancel_url: `${BASE_URL}/cart`,
+    success_url: `${LIVE_SITE_URL}/success`,
+    cancel_url: `${LIVE_SITE_URL}/cart`,
   });
 
   return NextResponse.json({ id: session.id });
