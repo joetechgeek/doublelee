@@ -13,7 +13,7 @@ export default function SuccessPage() {
       <div className="mb-12">
         <Link 
           href="/" 
-          className="inline-block bg-primary text-background px-8 py-4 rounded-lg font-semibold text-lg hover:bg-opacity-80 transition-colors duration-200 shadow-lg"
+          className="inline-block bg-secondary text-background px-8 py-4 rounded-lg font-semibold text-lg hover:bg-opacity-80 transition-colors duration-200 shadow-lg border border-primary"
         >
           Continue Shopping
         </Link>
