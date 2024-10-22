@@ -26,11 +26,21 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCart(JSON.parse(savedCart));
     }
 
-    const clearCartFlag = localStorage.getItem('clearCart');
-    if (clearCartFlag === 'true') {
-      setCart([]);
-      localStorage.removeItem('clearCart');
-    }
+    const handleStorage = () => {
+      const clearCartFlag = localStorage.getItem('clearCart');
+      if (clearCartFlag === 'true') {
+        setCart([]);
+        localStorage.removeItem('cart');
+        localStorage.removeItem('clearCart');
+      }
+    };
+
+    window.addEventListener('storage', handleStorage);
+    handleStorage(); // Check on initial load
+
+    return () => {
+      window.removeEventListener('storage', handleStorage);
+    };
   }, []);
 
   useEffect(() => {

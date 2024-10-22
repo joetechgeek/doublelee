@@ -25,7 +25,7 @@ export async function POST(req: Request) {
       quantity: item.quantity,
     })),
     mode: 'payment',
-    success_url: `${LIVE_SITE_URL}/success`,
+    success_url: `${LIVE_SITE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${LIVE_SITE_URL}/cart`,
   });
 

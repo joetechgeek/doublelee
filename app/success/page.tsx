@@ -1,15 +1,36 @@
 'use client';
 
-import { useEffect } from 'react';
+import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import { useCart } from '@/contexts/CartContext';
+import Stripe from 'stripe';
 
-export default function SuccessPage() {
-  const { clearCart } = useCart();
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  apiVersion: '2023-08-16',
+});
 
-  useEffect(() => {
-    clearCart();
-  }, [clearCart]);
+export default async function SuccessPage({
+  searchParams,
+}: {
+  searchParams: { session_id: string };
+}) {
+  const sessionId = searchParams.session_id;
+
+  if (!sessionId) {
+    redirect('/');
+  }
+
+  try {
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    if (session.payment_status === 'paid') {
+      // Payment was successful, set a flag in localStorage
+      // We'll use client-side JavaScript to actually clear the cart
+    } else {
+      redirect('/');
+    }
+  } catch (error) {
+    console.error('Error verifying payment:', error);
+    redirect('/');
+  }
 
   return (
     <div className="container mx-auto px-4 py-16 text-center">
@@ -31,6 +52,14 @@ export default function SuccessPage() {
       <p className="text-lg text-foreground">
         We hope you enjoy your purchase! Click the button above to browse more products.
       </p>
+      <script dangerouslySetInnerHTML={{
+        __html: `
+          localStorage.setItem('clearCart', 'true');
+          if (typeof window !== 'undefined') {
+            window.dispatchEvent(new Event('storage'));
+          }
+        `
+      }} />
     </div>
   );
 }
