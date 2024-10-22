@@ -47,9 +47,11 @@ async function getOrder(id: string) {
 
 interface PageProps {
   params: Params;
+  searchParams: { [key: string]: string | string[] | undefined };
 }
 
-export default async function OrderDetail({ params }: PageProps) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default async function OrderDetail({ params, searchParams }: PageProps) {
   const order = await getOrder(params.id);
 
   if (!order) {
