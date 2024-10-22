@@ -39,7 +39,12 @@ async function getOrder(id: string) {
   return order as Order;
 }
 
-export default async function OrderDetail({ params }: { params: Params }) {
+export default async function OrderDetail({
+  params,
+}: {
+  params: Params;
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
   const order = await getOrder(params.id);
 
   if (!order) {

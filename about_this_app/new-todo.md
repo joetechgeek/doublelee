@@ -39,6 +39,9 @@
 - [x] Apply coupon code during checkout (10% discount)
 - [x] Calculate and apply discounts
 - [x] Update stock levels after successful purchase
+- [x] Create order record in Supabase during checkout
+- [x] Update order status after successful payment
+- [x] Implement Stripe webhook handler
 
 ## Order Management
 - [x] Create order history page
@@ -53,7 +56,7 @@
 - [x] Refactor order detail page to handle async data fetching correctly
 
 ## Commission System
-- [ ] Implement commission tracking for coupon usage (10% commission)
+- [x] Implement commission tracking for coupon usage (10% commission)
 - [ ] Create affiliate dashboard for users
 - [ ] Display earned commissions and usage statistics
 

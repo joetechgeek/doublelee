@@ -7,94 +7,22 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2023-08-16',
 });
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-if (!supabaseUrl || !supabaseKey) {
-  throw new Error('Missing Supabase environment variables');
-}
-
-const supabase = createClient(supabaseUrl, supabaseKey);
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL!;
+const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
 
 export async function POST(req: Request) {
-  const { items, couponCode, userId } = await req.json() as { items: CartItem[], couponCode: string | null, userId: string };
+  const { items, userId, couponCode } = await req.json() as { items: CartItem[], userId: string, couponCode: string | null };
 
-  // Update stock levels
-  for (const item of items) {
-    const { data, error } = await supabase
-      .from('products')
-      .select('stock')
-      .eq('id', item.id)
-      .single();
-
-    if (error || !data) {
-      return NextResponse.json({ error: 'Error fetching product stock' }, { status: 400 });
-    }
-
-    const newStock = data.stock - item.quantity;
-    if (newStock < 0) {
-      return NextResponse.json({ error: 'Not enough stock available' }, { status: 400 });
-    }
-
-    const { error: updateError } = await supabase
-      .from('products')
-      .update({ stock: newStock })
-      .eq('id', item.id);
-
-    if (updateError) {
-      return NextResponse.json({ error: 'Error updating stock' }, { status: 400 });
-    }
-  }
-
-  let couponId: string | undefined;
-  if (couponCode) {
-    const { data: couponData } = await supabase
-      .from('profiles')
-      .select('id')
-      .eq('coupon_code', couponCode)
-      .single();
-
-    if (couponData) {
-      const coupon = await stripe.coupons.create({
-        percent_off: 10,
-        duration: 'once',
-      });
-      couponId = coupon.id;
-    }
-  }
-
-  const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-  const session = await stripe.checkout.sessions.create({
-    payment_method_types: ['card'],
-    line_items: items.map((item: CartItem) => ({
-      price_data: {
-        currency: 'usd',
-        product_data: {
-          name: item.name,
-        },
-        unit_amount: Math.round(item.price * 100),
-      },
-      quantity: item.quantity,
-    })),
-    mode: 'payment',
-    success_url: `${SITE_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${SITE_URL}/cart`,
-    discounts: couponId ? [{ coupon: couponId }] : undefined,
-    metadata: {
-      user_id: userId,
-    },
-  });
+  // Calculate total amount
+  const total_amount = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
   // Create order in Supabase
   const { data: order, error: orderError } = await supabase
     .from('orders')
     .insert({
       user_id: userId,
-      total_amount: total,
+      total_amount: total_amount,
       status: 'pending',
+      coupon_code: couponCode,
     })
     .select()
     .single();
@@ -121,5 +49,26 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Error creating order items' }, { status: 500 });
   }
 
-  return NextResponse.json({ id: session.id, order_id: order.id });
+  // Create Stripe session
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    line_items: items.map((item: CartItem) => ({
+      price_data: {
+        currency: 'usd',
+        product_data: {
+          name: item.name,
+        },
+        unit_amount: Math.round(item.price * 100),
+      },
+      quantity: item.quantity,
+    })),
+    mode: 'payment',
+    success_url: `${process.env.NEXT_PUBLIC_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
+    cancel_url: `${process.env.NEXT_PUBLIC_URL}/cart`,
+    metadata: {
+      order_id: order.id,
+    },
+  });
+
+  return NextResponse.json({ id: session.id });
 }
