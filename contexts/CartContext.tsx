@@ -26,13 +26,15 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCart(JSON.parse(savedCart));
     }
 
-    // Check for clearCart flag
-    const clearCartFlag = localStorage.getItem('clearCart');
-    if (clearCartFlag === 'true') {
-      setCart([]);
-      localStorage.removeItem('cart');
-      localStorage.removeItem('clearCart');
-    }
+    const checkClearCartFlag = async () => {
+      const response = await fetch('/api/check-clear-cart');
+      const data = await response.json();
+      if (data.clearCart) {
+        clearCart();
+      }
+    };
+
+    checkClearCartFlag();
   }, []);
 
   useEffect(() => {
