@@ -5,12 +5,17 @@ import { Order } from '@/types/order'
 
 export const dynamic = 'force-dynamic'
 
-export default async function OrderDetail({
-  params,
-}: {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
+interface PageProps {
+  params: { id: string }
+}
+
+export async function generateStaticParams() {
+  const supabase = createServerComponentClient({ cookies })
+  const { data: orders } = await supabase.from('orders').select('id')
+  return orders?.map(({ id }) => ({ id })) || []
+}
+
+export default async function OrderDetail({ params }: PageProps) {
   const supabase = createServerComponentClient({ cookies })
 
   const { data: { user } } = await supabase.auth.getUser()
