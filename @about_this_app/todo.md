@@ -1,5 +1,11 @@
 # Todo List
 
+## Setup Supabase and Stripe
+1. Create a Supabase client utility file
+2. Set up Supabase environment variables
+3. Create a Stripe client utility file
+4. Set up Stripe environment variables
+
 ## Display Products on Homepage
 1. Create a new component `ProductCard.tsx` in `components` folder
 2. Fetch products from Supabase in `app/page.tsx`
