@@ -3,7 +3,7 @@
 ## Setup Supabase and Stripe
 - [ ] Create a Supabase client utility file
 - [ ] Set up Supabase environment variables
-- [ ] Create a Stripe client utility file
+- [x] Create a Stripe client utility file
 - [ ] Set up Stripe environment variables
 
 ## Display Products on Homepage
@@ -17,7 +17,7 @@
 - [x] Implement `addToCart`, `removeFromCart`, and `updateQuantity` functions in `CartContext`
 - [x] Create a `useCart` hook to easily access cart functionality throughout the app
 - [x] Add "Add to Cart" button on `ProductCard` component
-- [ ] Implement quantity selector on `ProductCard` for products already in cart
+- [x] Implement quantity selector on `ProductCard` for products already in cart
 
 ## Create Cart Counter
 - [x] Create a cart counter functionality (integrated into Header)
@@ -31,14 +31,15 @@
 
 ## Next Steps
 - [x] Implement a cart page to display all items in the cart
-- [ ] Create a checkout process
-- [ ] Integrate Stripe for payments
+- [x] Create a checkout process
+- [x] Integrate Stripe for payments
 - [ ] Implement the coupon system during checkout
 
 ## Bug Fixes and Improvements
 - [x] Add "use client" directive to `CartContext.tsx` to fix build errors
 - [x] Refactor `CartContext.tsx` to work correctly in Next.js 13 with App Router
 - [x] Ensure all client-side components are properly marked with "use client"
-- [ ] Test and debug cart functionality
+- [x] Test and debug cart functionality
+- [x] Fix ESLint error in create-checkout-session route
 
 Remember to use Tailwind CSS for styling and leverage Next.js 13 App Router features for efficient routing and data fetching.
