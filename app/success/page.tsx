@@ -10,12 +10,17 @@ export default function SuccessPage() {
       <p className="text-foreground mb-8">
         You will receive an email confirmation shortly.
       </p>
-      <Link 
-        href="/" 
-        className="inline-block bg-secondary text-background px-6 py-3 rounded-lg font-semibold hover:bg-opacity-80 transition-colors duration-200"
-      >
-        Continue Shopping
-      </Link>
+      <div className="mt-12">
+        <Link 
+          href="/" 
+          className="inline-block bg-secondary text-background px-8 py-4 rounded-lg font-semibold text-lg hover:bg-opacity-80 transition-colors duration-200"
+        >
+          Continue Shopping
+        </Link>
+      </div>
+      <p className="mt-6 text-foreground">
+        We hope you enjoy your purchase! Click the button above to browse more products.
+      </p>
     </div>
   );
 }
