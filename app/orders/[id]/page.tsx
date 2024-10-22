@@ -5,11 +5,12 @@ import { Order } from '@/types/order'
 
 export const dynamic = 'force-dynamic'
 
-type Params = {
-  id: string
-}
-
-export default async function OrderDetail({ params }: { params: Params }) {
+export default async function OrderDetail({
+  params,
+}: {
+  params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
+}) {
   const supabase = createServerComponentClient({ cookies })
 
   const { data: { user } } = await supabase.auth.getUser()
