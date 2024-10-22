@@ -26,7 +26,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   }, [isAdded]);
 
   return (
-    <div className="border rounded-lg overflow-hidden shadow-lg bg-gray-800 flex flex-col h-full">
+    <div className="border border-gray-700 rounded-lg overflow-hidden shadow-lg bg-gray-800 flex flex-col h-full">
       <Image
         src={product.image_url}
         alt={product.alt_image || product.name}
@@ -44,7 +44,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             className={`px-4 py-2 rounded transition-colors duration-200 ${
               isAdded 
                 ? 'bg-green-500 text-white' 
-                : 'bg-blue-500 text-white hover:bg-blue-600'
+                : 'bg-primary text-background hover:bg-opacity-80'
             }`}
           >
             {isAdded ? 'Added to Cart' : 'Add to Cart'}

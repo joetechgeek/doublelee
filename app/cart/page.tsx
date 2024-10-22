@@ -34,34 +34,34 @@ export default function CartPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-4 text-primary">Your Cart</h1>
+      <h1 className="text-3xl font-bold mb-6 text-primary">Your Cart</h1>
       {cart.length === 0 ? (
-        <p className="text-foreground">Your cart is empty.</p>
+        <p className="text-xl text-foreground">Your cart is empty.</p>
       ) : (
         <>
           {cart.map((item) => (
             <div key={item.id} className="flex items-center justify-between border-b border-gray-600 py-4">
               <div>
                 <h2 className="text-lg font-semibold text-primary">{item.name}</h2>
-                <p className="text-gray-400">${item.price.toFixed(2)} each</p>
+                <p className="text-gray-300">${item.price.toFixed(2)} each</p>
               </div>
               <div className="flex items-center">
                 <button
                   onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                  className="bg-gray-700 text-white px-2 py-1 rounded-l"
+                  className="bg-gray-700 text-white px-3 py-1 rounded-l hover:bg-gray-600"
                 >
                   -
                 </button>
                 <span className="bg-gray-600 text-white px-4 py-1">{item.quantity}</span>
                 <button
                   onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                  className="bg-gray-700 text-white px-2 py-1 rounded-r"
+                  className="bg-gray-700 text-white px-3 py-1 rounded-r hover:bg-gray-600"
                 >
                   +
                 </button>
                 <button
                   onClick={() => removeFromCart(item.id)}
-                  className="ml-4 text-red-500"
+                  className="ml-4 text-red-400 hover:text-red-300"
                 >
                   Remove
                 </button>
@@ -69,10 +69,10 @@ export default function CartPage() {
             </div>
           ))}
           <div className="mt-8">
-            <h2 className="text-xl font-bold text-primary">Total: ${total.toFixed(2)}</h2>
+            <h2 className="text-2xl font-bold text-primary">Total: ${total.toFixed(2)}</h2>
             <button
               onClick={handleCheckout}
-              className="mt-4 bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600"
+              className="mt-6 bg-secondary text-background px-8 py-3 rounded-lg text-lg font-semibold hover:bg-opacity-80 transition-colors duration-200"
             >
               Proceed to Checkout
             </button>
