@@ -1,10 +1,10 @@
 'use client'
 
-import { useState } from 'react';
 import { useCart } from '@/contexts/CartContext';
 import { useAuth } from '@/contexts/AuthContext';
 import { loadStripe } from '@stripe/stripe-js';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
@@ -34,20 +34,20 @@ export default function CartPage() {
       return;
     }
 
-    const stripe = await stripePromise;
     const response = await fetch('/api/create-checkout-session', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ 
+      body: JSON.stringify({
         items: cart,
-        couponCode: couponDiscount > 0 ? couponCode : null
+        couponCode: couponCode,
       }),
     });
 
     const session = await response.json();
 
+    const stripe = await stripePromise;
     const result = await stripe?.redirectToCheckout({
       sessionId: session.id,
     });
@@ -94,17 +94,14 @@ export default function CartPage() {
             </div>
           ))}
           <div className="mt-8">
-            <h2 className="text-2xl font-bold text-primary">Order Summary</h2>
-            <p>Subtotal: ${subtotal.toFixed(2)}</p>
-            {couponDiscount > 0 && <p>Discount: -${discount.toFixed(2)}</p>}
-            <p className="text-xl font-bold">Total: ${total.toFixed(2)}</p>
+            <h2 className="text-2xl font-bold text-primary">Total: ${total.toFixed(2)}</h2>
             <div className="mt-4">
               <input
                 type="text"
                 value={couponCode}
                 onChange={(e) => setCouponCode(e.target.value)}
                 placeholder="Enter coupon code"
-                className="px-3 py-2 border border-gray-300 rounded-md"
+                className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
               />
               <button
                 onClick={handleApplyCoupon}
@@ -116,7 +113,7 @@ export default function CartPage() {
             </div>
             <button
               onClick={handleCheckout}
-              className="mt-6 bg-primary text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-opacity-80 transition-colors duration-200 border border-secondary"
+              className="mt-6 bg-primary text-white px-8 py-3 rounded-lg text-lg font-semibold hover:bg-opacity-80 transition-colors duration-200"
             >
               Proceed to Checkout
             </button>
