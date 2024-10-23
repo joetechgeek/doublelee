@@ -1,13 +1,14 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { CartItem } from '@/types/cart';
-import { createClient } from '@supabase/supabase-js';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
+import { cookies } from 'next/headers';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: '2023-08-16',
 });
 
-const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!);
+const supabase = createServerComponentClient({ cookies });
 
 export async function POST(req: Request) {
   const { items, userId, couponCode } = await req.json() as { items: CartItem[], userId: string, couponCode: string | null };
@@ -15,14 +16,32 @@ export async function POST(req: Request) {
   // Calculate total amount
   const total_amount = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 
+  // Apply discount if coupon is used
+  const discount_applied = couponCode ? total_amount * 0.1 : 0; // 10% discount
+  const final_amount = total_amount - discount_applied;
+
+  // Fetch the issuer of the coupon if a coupon is used
+  let issued_by = null;
+  if (couponCode) {
+    const { data: issuer } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('coupon_code', couponCode)
+      .single();
+    issued_by = issuer?.id;
+  }
+
   // Create order in Supabase
   const { data: order, error: orderError } = await supabase
     .from('orders')
     .insert({
       user_id: userId,
-      total_amount: total_amount,
-      status: 'pending',
+      total_amount: final_amount,
+      discount_applied: discount_applied,
       coupon_code: couponCode,
+      issued_by: issued_by,
+      commission_paid: false,
+      status: 'pending',
     })
     .select()
     .single();
@@ -70,5 +89,5 @@ export async function POST(req: Request) {
     },
   });
 
-  return NextResponse.json({ id: session.id });
+  return NextResponse.json({ sessionId: session.id });
 }

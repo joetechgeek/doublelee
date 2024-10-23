@@ -1,6 +1,7 @@
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { cookies } from 'next/headers'
 import Link from 'next/link'
+import { OrderItem } from '@/types/order'
 
 export const dynamic = 'force-dynamic'
 
@@ -41,7 +42,7 @@ export default async function OrderHistory() {
           <p>Total: ${order.total_amount.toFixed(2)}</p>
           <h3 className="text-lg font-semibold mt-4 mb-2">Items:</h3>
           <ul>
-            {order.order_items.map(item => (
+            {order.order_items.map((item: OrderItem) => (
               <li key={item.id}>
                 {item.product.name} - Quantity: {item.quantity}, Price: ${item.price.toFixed(2)}
               </li>

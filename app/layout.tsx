@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import { CartProvider } from "@/contexts/CartContext";
 import { AuthProvider } from '@/contexts/AuthContext';
+import { UserProvider } from '@/contexts/UserContext';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -23,20 +24,22 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background`}
       >
-        <AuthProvider>
-          <CartProvider>
-            <Header />
-            {children}
-          </CartProvider>
-        </AuthProvider>
+        <UserProvider>
+          <AuthProvider>
+            <CartProvider>
+              <Header />
+              {children}
+            </CartProvider>
+          </AuthProvider>
+        </UserProvider>
       </body>
     </html>
   );

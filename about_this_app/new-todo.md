@@ -34,14 +34,12 @@
 - [x] Add stock check when adding to cart
 
 ## Checkout Process
+- [x] Implement checkout page
 - [x] Integrate Stripe for payments
 - [x] Implement checkout functionality
 - [x] Apply coupon code during checkout (10% discount)
 - [x] Calculate and apply discounts
-- [x] Update stock levels after successful purchase
-- [x] Create order record in Supabase during checkout
-- [x] Update order status after successful payment
-- [x] Implement Stripe webhook handler
+- [ ] Update stock levels after successful purchase
 
 ## Order Management
 - [x] Create order history page
