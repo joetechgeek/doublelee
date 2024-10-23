@@ -45,6 +45,11 @@ export default function CartPage() {
       }),
     });
 
+    if (!response.ok) {
+      console.error('Checkout failed:', await response.text());
+      return;
+    }
+
     const session = await response.json();
 
     const stripe = await stripePromise;
